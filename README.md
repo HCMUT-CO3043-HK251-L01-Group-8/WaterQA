@@ -1,3 +1,7 @@
+# WaterQA
+
+A water quality monitoring app, created for personal use on mobile platform.
+
 ## Developing conventions
 
 ### Directory structure
@@ -51,3 +55,16 @@ Names shall be written in English. Names with many word shall be separated by hy
 Example:
 - "Add login form"
 - "Edit history view: add "summary" button"
+
+## Frontend - backend API
+
+|Method|Endpoint|Description|
+|---|---|---|
+|GET|/|Same as /dashboard|
+|GET|/accounts/all|Get all rows from Accounts table in DB in JSON format|
+|GET|/accounts/id/:phone|Get 1 row by phone number (also UID) in JSON format|
+|GET|/auth/login/|Open login page|
+|GET|/accounts/signup/|Open sign up page|
+|GET|/dashboard|Open dashboard page with information suitable for current session. If a session doesn't exist, redirect to /auth/login|
+|POST|/auth/login/|Login (actually create a session) and redirect to dashboard|
+|POST|/accounts/signup|Create account, login and redirect to dashboard|
