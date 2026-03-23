@@ -1,13 +1,7 @@
-const { requireLogin } = require('../middleware/auth.middleware');
-
 function showDashboardPage(req, res) {
-  requireLogin(req, res, () => {});
-  res.send(`
-    <h1>WaterQA Dashboard</h1>
-    ${req.session.user ? `<p>Welcome back, ${req.session.user.phone}!</p>` : ''}
-    <p><a href="/auth/logout">Log out</a></p>
-    <p><a href="/accounts/changePassword">Change password</a></p>
-  `);
+  // requireLogin(req, res, () => { console.log('Login successfully'); });
+  const phone = req.session.user?.phone_number || null;
+  res.render('dashboard', { phone: phone });
 }
 module.exports = {
   showDashboardPage,
