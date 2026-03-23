@@ -10,13 +10,13 @@ class AccountsRepository {
       .all();
   }
   countRows(){
-    return db.prepare("SELECT COUNT(*) FROM USER AS count").all();
+  return db.prepare("SELECT COUNT(*) AS total FROM USER").get();
   }
   findByPhone(phone) {
     return db
       // .prepare("SELECT phone, hashedPass FROM Accounts WHERE phone=?")
       .prepare("SELECT phone_number, password_hash FROM USER WHERE phone_number=?")
-      .all([phone]);
+      .get([phone]);
   }
   findById(id){
     return db
