@@ -1,17 +1,13 @@
-// database/initDb.js
+const fs = require('fs');
+const path = require('path');
 const db = require('./db');
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS USER (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT,
-    phone_number TEXT UNIQUE,
-    password_hash TEXT,
-    role TEXT,
-    verification_status INTEGER,
-    created_at TEXT,
-    updated_at TEXT
-  );
-`);
+// Read SQL
+//This path assumes the SQL file is located at: /data/Water_QA_Original.sql
+const sqlPath = path.join(__dirname, '../../../data/Water_QA_Original.sql'); // NOTE: Update this path if your project structure is different. 
+const sql = fs.readFileSync(sqlPath, 'utf8');
 
-console.log('Table USER is ready');
+//Run schema
+db.exec(sql);
+
+console.log('Database initialized from SQL file');
