@@ -1,5 +1,6 @@
 // controllers/accounts.controller.js
 const accountsService = require("../services/accounts.service");
+// const { view } = require("../utils/path");
 
 function getAll(req, res) {
   try {
@@ -15,9 +16,9 @@ function getAll(req, res) {
     res.status(500).json({ success: false, error: err.message });
   }
 }
-function checkByPhone(req, res) {
+function findById(req, res) {
   try {
-    const bool = accountsService.checkByPhone(req.params.phone);
+    const bool = accountsService.findById(req.params.phone);
     res.json({
       success: true,
       data: bool,
@@ -29,26 +30,13 @@ function checkByPhone(req, res) {
 }
 
 function showSignupPage(req, res) {
-  // Map error code with error logs
-  let errLog = '';
-  if (req.query.error == 1) { errLog = 'Password confirmation does not match'; }
-  else if (req.query.error == 2) { errLog = 'Account existed. Please login'; }
-
-  res.send(`
-    <h1>Sign Up</h1>
-    <form method="POST" action="/accounts/signup">
-      <input name="phone" placeholder="Phone" required /><br>
-      <input type="password" name="password" placeholder="Password" required /><br>
-      <input type="password" name="passwordAgain" placeholder="Confirm password" required /><br>
-      <button type="submit">Sign up</button>
-    </form>
-    <p style="color:red">${errLog}</p>
-    Already have an account? <a href="/auth/login">Login</a>
-  `);
+  console.log('Error shown:', req.query.error);
+  res.render('sign-up', {error: req.query.error});
 }
 function signup(req, res) {
-  const { phone, password, passwordAgain } = req.body;
-  const errCode = accountsService.addAccount(phone, password, passwordAgain);
+  const { mail, phone, password, passwordAgain } = req.body;
+  const errCode = accountsService.addAccount(mail, phone, password, passwordAgain);
+  console.log('errCode:', errCode);
   if (errCode > 0) {
     res.redirect(`/accounts/signup?error=${errCode}`);
   }
@@ -61,23 +49,17 @@ function signup(req, res) {
 }
 
 function showChangePasswordPage(req, res) {
-  res.send(`
-    <h1>Change password</h1>
-    <form method="POST" action="/accounts/changePassword">
-      <input type="password" name="currentPass" placeholder="Current password" required /><br>
-      <input type="password" name="newPass" placeholder="New password" required /><br>
-      <input type="password" name="confirmPass" placeholder="Confirm password" required /><br>
-      <button type="submit">Change password</button>
-    </form>
-  `);
+  res.render('change-password', {err: req.query.error});
 }
 
 function changePassword(req, res) {
-  const phone = req.session.user.phone;
+  const id = req.session.user.user_id;
   const { currentPass, newPass, confirmPass } = req.body;
-  const errCode = accountsService.changePassword(phone, currentPass, newPass, confirmPass);
+  console.log(req.session.user);
+  console.log({id, currentPass, newPass, confirmPass});
+  const errCode = accountsService.changePassword(id, currentPass, newPass, confirmPass);
   if (errCode > 0) {
-    res.redirect(`/accounts/changePassword?error=${errCode}`);
+    res.redirect(`/accounts/change-password?error=${errCode}`);
   }
   else {
     res.redirect("/dashboard");
@@ -86,7 +68,7 @@ function changePassword(req, res) {
 
 module.exports = {
   getAll,
-  checkByPhone,
+  findById,
   showSignupPage,
   signup,
   showChangePasswordPage,
