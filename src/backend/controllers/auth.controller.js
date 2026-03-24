@@ -1,34 +1,29 @@
 // controllers/auth.controller.js
 const authService = require('../services/auth.service');
+const { view } = require('../utils/path');
 
 function showLoginPage(req, res) {
   if (req.session.user) {
     return res.redirect("/dashboard"); // this condition can only be implemented at Controller layer
   }
-  res.send(`
-    <h1>Login</h1>
-    <form method="POST" action="/auth/login">
-      <input name="phone" placeholder="Phone" required /><br>
-      <input type="password" name="password" placeholder="Password" required /><br>
-      <button type="submit">Login</button>
-    </form>
-    ${req.query.error ? '<p style="color:red">Wrong credentials</p>' : ""}
-    Doesn't have an account? <a href="/accounts/signup">Sign up</a>
-  `);
+  const err_ = req.query.error || 0;
+  res.render('login', {
+    err: err_
+  });
 }
 
 async function login(req, res) {
-  const { phone, password } = req.body;
- 
-  const success = authService.login(phone, password);
-  
-  if (!success) {
-    return res.redirect("/auth/login?error=1");
+  const { id, password } = req.body;
+
+  const { err, user } = authService.login(id, password);
+  // console.log("ERR:", err);
+  // console.log("USER:", user);
+
+  if (err > 0) {
+    return res.redirect(`/auth/login?error=${err}`);
   }
-  req.session.user = {
-    phone: phone    // Don't store password!
-  };
-  res.redirect("/dashboard");
+  req.session.user = user;
+  return res.redirect("/dashboard");
 
 }
 
