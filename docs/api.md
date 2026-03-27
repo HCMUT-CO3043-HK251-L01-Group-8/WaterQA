@@ -7,8 +7,8 @@ Lưu ý: Doc này do dev @tdung vừa dev vừa viết nên Việt Anh lẫn l�
 |#|Method|Endpoint|Description|Implemented?|
 |:-:|:-:|-|-|:-:|
 |1|GET|/|Same as /dashboard|<input type="checkbox" checked/>|
-|2|GET|/accounts/all|Get all rows from Accounts table in DB in JSON format|<input type="checkbox" checked/>|
-|3|GET|/accounts/id/:id|Get 1 row by phone number (also UID) in JSON format|<input type="checkbox" checked/>|
+|2|GET|/accounts/all|Get all rows from User table in DB in JSON format|<input type="checkbox" checked/>|
+|3|GET|/accounts/id/:id|Get 1 row by user_id (also UID) in JSON format|<input type="checkbox" checked/>|
 |4|GET|/auth/login|Open login page|<input type="checkbox" checked/>|
 |5|GET|/accounts/signup|Open sign up page|<input type="checkbox" checked/>|
 |6|GET|/dashboard|Open dashboard page with information suitable for current session. If a session doesn't exist, redirect to /auth/login|<input type="checkbox" checked/>|
