@@ -16,18 +16,40 @@ export default function TabLayout() {
         headerShown: false,
         tabBarButton: HapticTab,
       }}>
+      
+      {/* 1. Trang chủ */}
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Trang chủ',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="house" color={color} />,
         }}
       />
+
+      {/* 2. Lịch sử */}
       <Tabs.Screen
-        name="explore"
+        name="history"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Lịch sử',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="clock" color={color} />,
+        }}
+      />
+
+      {/* 3. Cảnh báo */}
+      <Tabs.Screen
+        name="notification"
+        options={{
+          title: 'Cảnh báo',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="bell" color={color} />, 
+        }}
+      />
+
+      {/* 4. Cài đặt (Tab mới thêm) */}
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Cài đặt',
+          tabBarIcon: ({ color }) => <IconSymbol size={24} name="gearshape" color={color} />,
         }}
       />
     </Tabs>
